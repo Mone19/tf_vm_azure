@@ -14,13 +14,13 @@ provider "azurerm" {
 
 # Resource Group
 resource "azurerm_resource_group" "jenkins_rg" {
-  name     = "resources"
+  name     = "jenkins-resources"
   location = "West Europe"
 }
 
 # Virtual Network
 resource "azurerm_virtual_network" "jenkins_vmnet" {
-  name                = "network"
+  name                = "jenkins-network"
   address_space       = ["10.0.0.0/16"]
   location            = azurerm_resource_group.jenkins_rg.location
   resource_group_name = azurerm_resource_group.jenkins_rg.name
@@ -28,7 +28,7 @@ resource "azurerm_virtual_network" "jenkins_vmnet" {
 
 # Subnet
 resource "azurerm_subnet" "jenkins_subnet" {
-  name                 = "subnet"
+  name                 = "jenkins-subnet"
   resource_group_name  = azurerm_resource_group.jenkins_rg.name
   virtual_network_name = azurerm_virtual_network.jenkins_vmnet.name
   address_prefixes     = ["10.0.2.0/24"]
@@ -36,7 +36,7 @@ resource "azurerm_subnet" "jenkins_subnet" {
 
 # Network Security Group
 resource "azurerm_network_security_group" "jenkins_vmnsg" {
-  name                = "nsg"
+  name                = "jenkins-nsg"
   location            = azurerm_resource_group.jenkins_rg.location
   resource_group_name = azurerm_resource_group.jenkins_rg.name
 
@@ -80,7 +80,7 @@ resource "azurerm_network_security_group" "jenkins_vmnsg" {
 
 # Public IP Address
 resource "azurerm_public_ip" "jenkins_vm_public_ip" {
-  name                = "public-ip"
+  name                = "jenkins-public-ip"
   location            = azurerm_resource_group.jenkins_rg.location
   resource_group_name = azurerm_resource_group.jenkins_rg.name
   allocation_method   = "Static"
@@ -88,7 +88,7 @@ resource "azurerm_public_ip" "jenkins_vm_public_ip" {
 
 # Network Interface
 resource "azurerm_network_interface" "jenkins_vmnic" {
-  name                = "nic"
+  name                = "jenkins-nic"
   location            = azurerm_resource_group.jenkins_rg.location
   resource_group_name = azurerm_resource_group.jenkins_rg.name
 
@@ -108,7 +108,7 @@ resource "azurerm_network_interface_security_group_association" "jenkins_nsg" {
 
 # Virtual Machine
 resource "azurerm_virtual_machine" "jenkins_vm" {
-  name                  = "vm"
+  name                  = "jenkins-vm"
   resource_group_name   = azurerm_resource_group.jenkins_rg.name
   location              = azurerm_resource_group.jenkins_rg.location
   vm_size               = "Standard_DS1_v2"
